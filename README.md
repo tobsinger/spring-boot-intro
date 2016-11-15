@@ -13,4 +13,5 @@ This project aims to help get started with spring boot.
 
 ## Test
 > GET: http://localhost:8080/person/id/<ID>
+
 > GET: http://localhost:8080/person/lasname/<NAME>
