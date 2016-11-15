@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+        classpath 'org.springframework:springloaded:1.2.0.RELEASE'
+    }
+}
+
+
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'gs-spring-boot'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://hello.repository.jboss.org/nexus/content/repositories/releases" }
+
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext {
+    queryDslVersion = '4.1.3'
+    javaGeneratedSources = file("$buildDir/generated-sources/java")
+}
+
+compileJava {
+    doFirst {
+        javaGeneratedSources.mkdirs()
+    }
+    options.compilerArgs += [
+            '-parameters', '-s', javaGeneratedSources
+    ]
+}
+
+idea {
+    module {
+        sourceDirs += javaGeneratedSources
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+    }
+}
+
+dependencies {
+
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+
+    compile "com.querydsl:querydsl-jpa:$queryDslVersion"
+    compile "com.querydsl:querydsl-apt:$queryDslVersion:jpa"
+
+    compile("com.h2database:h2")
+
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+    testCompile("junit:junit")
+}
