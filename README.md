@@ -11,3 +11,6 @@ This project aims to help get started with spring boot.
 ### Terminal
 > $ gradle bootRun
 
+## Test
+> GET: http://localhost:8080/person/id/<ID>
+> GET: http://localhost:8080/person/lasname/<NAME>
