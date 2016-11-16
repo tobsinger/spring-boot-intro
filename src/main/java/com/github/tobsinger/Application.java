@@ -2,7 +2,6 @@ package com.github.tobsinger;
 
 import com.github.tobsinger.entity.Customer;
 import com.github.tobsinger.repository.CustomerRepository;
-import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
