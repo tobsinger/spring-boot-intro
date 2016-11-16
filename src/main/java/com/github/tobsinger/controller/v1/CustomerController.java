@@ -25,7 +25,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 
 @RestController
-@RequestMapping("api/v1/person")
+@RequestMapping("api/v1/customer")
 public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;
@@ -41,7 +41,7 @@ public class CustomerController {
      */
     @RequestMapping(path = "/id/{id}", method = GET)
     @ApiOperation(value = "Fetches a customer by ID", response = Customer.class)
-    public Customer index(@ApiParam(value = "ID of the user to be searched for", required = true)
+    public Customer getById(@ApiParam(value = "ID of the user to be searched for", required = true)
                           @PathVariable Long id) throws JsonProcessingException {
         final Customer customer = customerRepository.findOne(id);
         return customer;
@@ -57,7 +57,7 @@ public class CustomerController {
      */
     @RequestMapping(path = "/lastname/{name}", method = GET)
     @ApiOperation(value = "Fetches customers by last name", response = Customer[].class)
-    public List<Customer> customQuery(@ApiParam(value = "last name to be searched for", required = true)
+    public List<Customer> getByLastName(@ApiParam(value = "last name to be searched for", required = true)
                                       @PathVariable String name) throws URISyntaxException, JsonProcessingException {
         final JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
         final QueryResults<Customer> customers = queryFactory.selectFrom(QCustomer.customer)
@@ -66,9 +66,15 @@ public class CustomerController {
         return customers.getResults();
     }
 
+    /**
+     * Add a {@link Customer} to the database
+     *
+     * @param customer The customer to be added
+     * @return 201 if successful
+     */
     @RequestMapping(method = PUT)
     @ApiOperation(value = "Add a customer")
-    public ResponseEntity createCustomer(@ApiParam(value = "the customer to be added", required = true) @RequestBody final Customer customer) {
+    public ResponseEntity create(@ApiParam(value = "the customer to be added", required = true) @RequestBody final Customer customer) {
         customerRepository.save(customer);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
