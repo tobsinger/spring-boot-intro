@@ -16,7 +16,15 @@ This project aims to help get started with spring boot.
 ### Terminal
 > $ gradle bootRun
 
-## Test
-> GET: http://localhost:8080/person/id/{ID}
+### Intellij
+Gradle > Tasks > application > bootRun
 
-> GET: http://localhost:8080/person/lasname/{NAME}
+## Interface documtentation and testing
+http://localhost:8080/swagger-ui.html
+
+## Endpoints
+> GET: http://localhost:8080/customer/id/{ID}
+
+> GET: http://localhost:8080/customer/lasname/{NAME}
+
+> PUT: http://localhost:8080/customer
