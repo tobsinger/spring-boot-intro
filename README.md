@@ -6,6 +6,7 @@ This project aims to help get started with spring boot.
 - Embedded H2 Development-Database
 - Query data using JPA with QueryDSL
 - Serialize results as JSON
+- Can be opened, edited and started from IntelliJ IDEA
 
 ## Required
 - Java 1.8
