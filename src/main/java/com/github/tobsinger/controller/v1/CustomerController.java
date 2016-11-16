@@ -1,4 +1,4 @@
-package com.github.tobsinger.controller;
+package com.github.tobsinger.controller.v1;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +7,8 @@ import com.github.tobsinger.entity.QCustomer;
 import com.github.tobsinger.repository.CustomerRepository;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,13 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.persistence.EntityManager;
 import java.net.URISyntaxException;
 
-@RestController
-@RequestMapping("/person/")
-public class CustomerController {
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+//import io.swagger.annotations.Api;
+
+@RestController
+@RequestMapping("api/v1/person/")
+public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;
-
     @Autowired
     private EntityManager entityManager;
 
@@ -36,8 +40,10 @@ public class CustomerController {
      * @return A JSON representation of the found customer
      * @throws JsonProcessingException
      */
-    @RequestMapping("id/{id}")
-    public ResponseEntity<String> index(@PathVariable Long id) throws JsonProcessingException {
+    @RequestMapping(path = "id/{id}", method = GET)
+    @ApiOperation(value = "Fetches a customer by ID", response = Customer.class)
+    public ResponseEntity<String> index( @ApiParam(value = "ID of the user to be searched for", required = true)
+                                             @PathVariable Long id) throws JsonProcessingException {
         final Customer customer = customerRepository.findOne(id);
         return buildResponse(customer);
     }
@@ -50,8 +56,10 @@ public class CustomerController {
      * @throws URISyntaxException
      * @throws JsonProcessingException
      */
-    @RequestMapping(value = "lastname/{name}")
-    public ResponseEntity<String> customQuery(@PathVariable String name) throws URISyntaxException, JsonProcessingException {
+    @RequestMapping(path = "lastname/{name}", method = GET)
+    @ApiOperation(value = "Fetches customers by last name", response = Customer[].class)
+    public ResponseEntity<String> customQuery( @ApiParam(value = "last name to be searched for", required = true)
+                                                   @PathVariable String name) throws URISyntaxException, JsonProcessingException {
         final JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
         final QueryResults<Customer> customers = queryFactory.selectFrom(QCustomer.customer)
                 .where(QCustomer.customer.lastName.eq(name))
